@@ -119,6 +119,16 @@ func (a *App) Run() error {
 		if err = a.opts.registrar.Register(rctx, instance); err != nil {
 			return err
 		}
+		for _, alias := range a.opts.alias {
+			if alias != a.Name() {
+				aliasInstance, _ := a.buildInstance()
+				aliasInstance.Name = alias
+				aliasInstance.ID = a.ID() + ":" + alias
+				if err = a.opts.registrar.Register(rctx, aliasInstance); err != nil {
+					return err
+				}
+			}
+		}
 	}
 	for _, fn := range a.opts.afterStart {
 		if err = fn(sctx); err != nil {

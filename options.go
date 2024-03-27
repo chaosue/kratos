@@ -16,8 +16,10 @@ type Option func(o *options)
 
 // options is an application options.
 type options struct {
-	id        string
-	name      string
+	id   string
+	name string
+	// alias for service register. all aliases are with the same endpoint.
+	alias     []string
 	version   string
 	metadata  map[string]string
 	endpoints []*url.URL
@@ -46,6 +48,11 @@ func ID(id string) Option {
 // Name with service name.
 func Name(name string) Option {
 	return func(o *options) { o.name = name }
+}
+
+// Alias with service name aliases.
+func Alias(alias ...string) Option {
+	return func(o *options) { o.alias = alias }
 }
 
 // Version with service version.
